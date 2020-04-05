@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>guess_number</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        p {
+            border: 1px solid #000;
+            padding: 70px;
+            margin-top: 20px;
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="row ">
+
+            <div class="btn-toolbar d-flex flex-wrap mx-auto" role="toolbar" aria-label="Toolbar with button groups">
+                <p class="=p-5 w-100 text-center">
+                    0~100
+                </p>
+
+                <div class="
+                produce_number w-100 text-center ">
+                    <button type="button" class="btn btn-primary" onclick='getRandomInt()'>產生數字</button>
+                </div>
+
+                <input class="input_Num mx-auto mb-3 d-block" type="text" name='inputnumber' id='inputnumber'>
+
+                <div class="btn-group mr-2 d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">1</button>
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">2</button>
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">3</button>
+                </div>
+
+                <div class="btn-group mr-2  d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">4</button>
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">5</button>
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">6</button>
+                </div>
+
+                <div class="btn-group mr-2  d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">7</button>
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">8</button>
+                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">9</button>
+                </div>
+
+                <div class="btn-group mr-2  d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
+                    <button  onclick="Remove()" type="button" class="btn btn-secondary" name="num" style="color: red;">X</button>
+                    <button  onclick="GetNum(this)" type="button" class="btn btn-secondary" name="num">0</button>
+                    <button  onclick="Check()" type="button" class="btn btn-secondary" name="num" style="color: green;">V</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 初始化
+        var ran_Num=0; 
+        // Math.floor(Math.random()*100) :產生十位數(*100)的亂數並去除小數
+        function getRandomInt() {
+            ran_Num=Math.floor(Math.random()*100);
+            console.log(ran_Num);
+        }
+
+        var btnList=document.getElementsByClassName('btn btn-secondary');
+        for(let item in btnList){
+            // 每個按鈕事件
+        }
+
+        var input = document.getElementById('inputnumber');
+        function GetNum(num){
+            // console.log(el);
+            // console.log(el.innerText);
+            input.value=input.value+num;       
+        }
+      
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="fontawesome-free-5.12.1-web/css/all.css">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet"> -->
+
+    <title>Apple</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row mt-3 " id="product_btnGroup">
+            <div class="btnGroup mx-auto">
+                <button id="iphone" type="button" class="btn btn-primary "
+                    onclick="Product(this.innerText)">iphone</button>
+                <button id="ipad" type="button" class="btn btn-primary" onclick="Product(this.innerText)">ipad</button>
+                <button id="mac" type="button" class="btn btn-primary" onclick="Product(this.innerText)">mac</button>
+                <button id="watch" type="button" class="btn btn-primary"
+                    onclick="Product(this.innerText)">watch</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <img id="product_img" src="" class="img-fluid" alt="">
+            </div>
+            <div class="col-12 col-md-6">
+
+                <divclass="row" id="color">
+                    <!-- 
+                    <div class="col-6 col-md-6 ">
+                        <button class="color_btn btn btn-outline-secondary">
+                        <div class="p-5  d-flex flex-column justify-content-center align-items-center">
+                            <i class="fas fa-circle" style="color:white;"></i>
+                            <span>白色</span>
+                        </div>
+                        </button> 
+                    </div>-->
+
+            </div>
+
+            <div class="row" id="genre">
+
+            </div>
+
+            <div class="row" id="cost">
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+
+    <script>
+        var products = {
+            iphone: {
+                Primary: 'apple/iphone11.png',
+                Exterior: [
+                    { colorName: '白色', color: '#ffffff', src: 'apple/i11_white.png' },
+                    { colorName: '黑色', color: '#000000', src: 'apple/i11_black.png' },
+                    { colorName: '綠色', color: '#99FF99', src: 'apple/i11_green.png' },
+                    { colorName: '黃色', color: '#FFFF77', src: 'apple/i11_yellow.png' },
+                    { colorName: '紫色', color: '#D28EFF', src: 'apple/i11_purple.png' },
+                    { colorName: '紅色', color: '#CC0000', src: 'apple/i11_red.png' }
+                ],
+                Storge: [
+                    { size: '64GB', price: 24900 },
+                    { size: '128GB', price: 26900 },
+                    { size: '256GB', price: 30400 }
+                ],
+            },
+
+            ipad: {
+                Primary: 'apple/ipad.png',
+                Exterior: [
+                    { colorName: '太空灰色', color: '#666666', src: 'apple/ipad_gray.png' },
+                    { colorName: '銀色', color: '#DDDDDD', src: 'apple/ipad_silver.png' },
+                    { colorName: '金色', color: '#FFCCCC', src: 'apple/ipad_pink.png' }
+                ],
+                Storge: [
+                    { size: '32GB', price: 10900 },
+                    { size: '128GB', price: 13900 }
+                ],
+                Connect: [
+                    { network: 'wifi', price: 10900 },
+                    { network: 'wifi_mobnet', price: 15400 }
+                ],
+            },
+
+            mac: {
+                Primary: 'apple/mac.png',
+                Exterior: [
+                    { colorName: '太空灰色', color: '#666666', src: 'apple/mac_gray.png' },
+                    { colorName: '銀色', color: '#DDDDDD', src: 'apple/mac_silver.png' }
+                ],
+                Storge: [
+                    { size: '128GB', price: 39900 },
+                    { size: '256GB', price: 45900 },
+                    { size: '512GB', price: 51900 },
+                    { size: '1TB', price: 57900 },
+                    { size: '2TB', price: 69900 }
+                ],
+            },
+
+            watch: {
+                Primary: 'apple/watch.png',
+                Exterior: [
+                    { colorName: '銀色', color: '#DDDDDD', src: 'apple/watch_silver.png' },
+                    { colorName: '金色', color: '#FFCCCC', src: 'apple/watch_pink.png' },
+                    { colorName: '太空灰色', color: '#666666', src: 'apple/watch_gray.png' }
+                ],
+                Storge: [
+                    { size: '40Mm', price: 13400 },
+                    { size: '44Mm', price: 14400 }
+                ],
+                Connect: [
+                    { network: 'GPS', price: 13400 },
+                    { network: 'GPS_mobnet', price: 16900 }
+                ],
+            },
+        };
+
+        var iphone_Btn = document.getElementById('iphone');
+        var Img = document.getElementById('product_img');
+        var color_Region = document.getElementById('color');
+        var genre_Region = document.getElementById('genre');
+        var cost_Region = document.getElementById('cost');
+
+        function Product(pro) {
+            color_Region.innerHTML = null;
+            genre_Region.innerHTML = null;
+            cost_Region.innerHTML = null;
+            Img.setAttribute('src', products[pro].Primary);
+
+            // let color_title = document.createElement('h1');
+            // color_title.innerHTML='顏色';
+            // let color_text=document.getElementsByTagName('div')[0];
+            // h1.appendChild(color_title);
+
+            let color_text = document.createElement('div')
+            color_text.classList.add('w-100', 'd-flex', 'justify-content-center');
+            let color_title = document.createElement('h1');
+            color_title.innerText = '外觀';
+            color_text.appendChild(color_title);
+            color_Region.appendChild(color_text);
+
+            for (let item of products[pro].Exterior) {
+                let outdiv = document.createElement('div');
+                outdiv.classList.add('col-6', 'col-md-6');
+                outdiv.appendChild('color_Btn');
+
+                let color_Btn = document.createElement('button');
+                color_Btn.classList.add('color_btn', 'color_btn-out-secondary', 'w-100', 'jystify-content-center');
+                color_Btn.setAttribute('pic', item.src);
+
+                let indiv = document.createElement('div');
+                indiv.classList.add('p-4', 'd-flex', 'flex-column', 'jystify-content-center', 'align-items-center');
+                color_Btn.appendChild('indiv');
+
+                let icon = document.createElement('i');
+                icon.classList.add('fas', 'fa-circle');
+                icon.style.color = item.color;
+
+                let color_span = document.createElement('span');
+                color_span.innerText = item.colorName;
+
+                indiv.appendChild('icon');
+                indiv.appendChild('color_span');
+                color_Region.appendChild('indiv');
+            }
+            let all_colorBtns = document.getElementsByClassName('color_btn');
+            for (let Btn of all_colorBtns) {
+                Btn.addEventListener('click', function () {
+                    console.log(Btn);
+
+                });
+            }
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
