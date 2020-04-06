@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>guess_number</title>
+    <title>guess</title>
     <style>
         * {
             margin: 0;
@@ -24,84 +24,108 @@
             margin-top: 20px;
 
         }
+        .btn {
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            margin: 3px;
+        }
     </style>
 </head>
 
 <body>
-
-
-    <div class="container">
-        <div class="row ">
-
+    <div class="container d-flex flex-direction-col justify-content-center align-items-center">
+        <div class="row">
             <div class="btn-toolbar d-flex flex-wrap mx-auto" role="toolbar" aria-label="Toolbar with button groups">
-                <p class="=p-5 w-100 text-center">
-                    0~100
-                </p>
-
-                <div class="
-                produce_number w-100 text-center ">
-                    <button type="button" class="btn btn-primary" onclick='getRandomInt()'>產生數字</button>
+                <p class="=p-5 w-100 text-center" id="range_Num">0~100</p>
+                
+                <div class="produce_number w-100 text-center ">
+                    <button id="getNum" type="button" class="numbtn btn-primary" onclick='getRandomInt()'>產生數字</button>
                 </div>
 
                 <input class="input_Num mx-auto mb-3 d-block" type="text" name='inputnumber' id='inputnumber'>
 
-                <div class="btn-group mr-2 d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"  name="num">1</button>
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"  name="num">2</button>
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"  name="num">3</button>
-                </div>
+                <div class="all w-100 mx-auto d-flex flex-direction-col justify-content-center align-items-center">
+                    <table>
+                        <tr>
+                            <td><input class="btn btn-dark" type="button" value="1" onclick="input(1)"></td>
+                            <td><input class="btn btn-dark" type="button" value="2" onclick="input(2)"></td>
+                            <td><input class="btn btn-dark" type="button" value="3" onclick="input(3)"></td>
+                        </tr>
 
-                <div class="btn-group mr-2  d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"   name="num">4</button>
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"   name="num">5</button>
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"   name="num">6</button>
-                </div>
+                        <tr>
+                            <td><input class="btn btn-dark" type="button" value="4" onclick="input(4)"></td>
+                            <td><input class="btn btn-dark" type="button" value="5" onclick="input(5)"></td>
+                            <td><input class="btn btn-dark" type="button" value="6" onclick="input(6)"></td>
+                        </tr>
 
-                <div class="btn-group mr-2  d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"   name="num">7</button>
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"   name="num">8</button>
-                    <button onclick="GetNum(this)" type="button" class="btn btn-secondary"  name="num">9</button>
-                </div>
+                        <tr>
+                            <td><input class="btn btn-dark" type="button" value="7" onclick="input(7)"></td>
+                            <td><input class="btn btn-dark" type="button" value="8" onclick="input(8)"></td>
+                            <td><input class="btn btn-dark" type="button" value="9" onclick="input(9)"></td>
+                        </tr>
 
-                <div class="btn-group mr-2  d-block w-100 mb-2 text-center" role="group" aria-label="Second group">
-                    <button  onclick="Remove()" type="button" class="btn btn-secondary" name="num" style="color: red;">X</button>
-                    <button  onclick="GetNum(this)" type="button" class="btn btn-secondary"  name="num">0</button>
-                    <button  onclick="Check()" type="button" class="btn btn-secondary" name="num" style="color: green;">V</button>
+                        <tr>
+                            <td><input class="btn btn-dark " type="button" value="X" style="color: red;"onclick="remove()"></td>
+                            <td><input class="btn btn-dark" type="button" value="0" onclick="input(0)"></td>
+                            <td><input class="btn btn-dark" type="button" value="v" style="color: yellowgreen;"onclick="check()"></td>
+                        </tr>
+
+
+
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
-        // 初始化
+
+
         var ran_Num=0; 
-        // Math.floor(Math.random()*100) :產生十位數(*100)的亂數並去除小數
         function getRandomInt() {
             ran_Num=Math.floor(Math.random()*100);
-            console.log(ran_Num);
+            // console.log(ran_Num);
+            range.innerHTML='0~100';
+            result.value = '';
+            max_Num=100;
+            min_Num=0;
         }
 
-        var btnList=document.getElementsByClassName('btn btn-secondary');
-        for(let item in btnList){
-            // 每個按鈕事件
+        var result = document.getElementById('inputnumber');
+        function input(num) {
+            result.value = result.value + num;
+        }
+        function remove() {
+            result.value = ' ';
         }
 
-        var input = document.getElementById('inputnumber');
-        function GetNum(num){
-            // console.log(el);
-            // console.log(el.innerText);
-            input.value=input.value+num;       
+        var range=document.getElementById('range_Num');
+        var max_Num=100;
+        var min_Num=0;
+        function check() {
+            if (ran_Num == parseInt(result.value)){
+                alert('恭喜你答對了!');
+                ran_Num = undefined;
+                result.value = '';
+                range.innerText = `0~100`;
+            }
+           else{
+               if(parseInt(result.value)<ran_Num && parseInt(result.value)>min_Num){
+                   min_Num=parseInt(result.value);
+               }
+               else if(parseInt(result.value)>ran_Num && parseInt(result.value)<max_Num){
+                   max_Num=parseInt(result.value);
+               }
+               range.innerText = `${min_Num}~${max_Num}`;
+               result.value = '';
+           }
         }
-      
+
 
 
     </script>
-
-
-
-
-
-
-
 
 
     <!-- Optional JavaScript -->
