@@ -47,31 +47,31 @@
       <div class="all w-100 mx-auto mt-2 d-flex flex-direction-col justify-content-center align-items-center">
         <table>
           <tr>
-            <td><input class="btn btn-secondary" type="button" value="AC" onclick="remove()"></td>
-            <td><input class="btn btn-secondary" type="button" value="C" onclick="back()"></td>
-            <td><input class="btn btn-secondary" type="button" value="%" onclick="percent()"></td>
-            <td><input class="btn btn-secondary" type="button" value="÷" onclick="input('/')"></td>
+            <td><input class="btn bg-dark text-white" type="button" value="AC" onclick="remove()"></td>
+            <td><input class="btn bg-dark text-white" type="button" value="C" onclick="back()"></td>
+            <td><input class="btn bg-dark text-white" type="button" value="%" onclick="percent()"></td>
+            <td><input class="btn bg-warning" type="button" value="÷" onclick="input('/')"></td>
           </tr>
 
           <tr>
             <td><input class="btn btn-secondary" type="button" value="7" onclick="input(7)"></td>
             <td><input class="btn btn-secondary" type="button" value="8" onclick="input(8)"></td>
             <td><input class="btn btn-secondary" type="button" value="9" onclick="input(9)"></td>
-            <td><input class="btn btn-secondary" type="button" value="x" onclick="input('*')"></td>
+            <td><input class="btn bg-warning" type="button" value="x" onclick="input('*')"></td>
           </tr>
 
           <tr>
             <td><input class="btn btn-secondary" type="button" value="4" onclick="input(4)"></td>
             <td><input class="btn btn-secondary" type="button" value="5" onclick="input(5)"></td>
             <td><input class="btn btn-secondary" type="button" value="6" onclick="input(6)"></td>
-            <td><input class="btn btn-secondary" type="button" value="-" onclick="input('-')"></td>
+            <td><input class="btn bg-warning" type="button" value="-" onclick="input('-')"></td>
           </tr>
 
           <tr>
             <td><input class="btn btn-secondary" type="button" value="1" onclick="input(1)"></td>
             <td><input class="btn btn-secondary" type="button" value="2" onclick="input(2)"></td>
             <td><input class="btn btn-secondary" type="button" value="3" onclick="input(3)"></td>
-            <td><input class="btn btn-secondary" type="button" value="+" onclick="input('+')"></td>
+            <td><input class="btn bg-warning" type="button" value="+" onclick="input('+')"></td>
           </tr>
           
           <tr>
@@ -79,7 +79,7 @@
                 style="width: 110px;">
             </td>
             <td><input class="btn btn-secondary" type="button" value="." onclick="input('.')" style="width: 50px;"></td>
-            <td><input class="btn btn-secondary" type="button" value="=" onclick="equal()" style="height: 50px;"></td>
+            <td><input class="btn bg-warning" type="button" value="=" onclick="equal()" style="height: 50px;"></td>
           </tr>
 
         </table>
@@ -102,7 +102,7 @@
       result.value = eval(result.value);
     }
     function percent(){
-      result.value=(result.value/100);
+      result.value=result.value/100;
     }
 
   </script>
