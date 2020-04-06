@@ -23,7 +23,7 @@
       width: 50px;
       height: 50px;
       font-size: 20px;
-      margin: 3px;
+      margin: 4px;
     }
 
     .input_Num {
@@ -42,9 +42,9 @@
   <div class="container d-flex flex-direction-col justify-content-center align-items-center">
     <div class="row">
 
-      <input class="input_Num mx-auto mt-3 d-block " type="text" name='inputnumber' id='inputnumber'>
+      <input class="input_Num mx-auto mt-4 d-block " type="text" name='inputnumber' id='inputnumber'>
 
-      <div class="all w-100 mx-auto d-flex flex-direction-col justify-content-center align-items-center">
+      <div class="all w-100 mx-auto mt-2 d-flex flex-direction-col justify-content-center align-items-center">
         <table>
           <tr>
             <td><input class="btn btn-secondary" type="button" value="AC" onclick="remove()"></td>
@@ -96,9 +96,7 @@
       result.value = ' '; 
     }
     function back(){
-      let num=result.value;
-      // stringObject .substr( start , length )
-      result.value = num.substr(0, num.length-1);
+      result.value = result.value.substring(0, result.value.length-1);
     }
     function equal() {
       result.value = eval(result.value);
