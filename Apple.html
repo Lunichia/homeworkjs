@@ -13,13 +13,19 @@
     <!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet"> -->
 
     <title>Apple</title>
+    <style>
+        #product_btnGroup #btnGroup:hover {
+            background-color: unset;
+            color: #000;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="container">
         <div class="row mt-3 " id="product_btnGroup">
-            <div class="btnGroup mx-auto">
+            <div class="btnGroup mx-auto" id="btnGroup">
                 <button id="iphone" type="button" class="btn btn-primary "
                     onclick="Product(this.innerText)">iphone</button>
                 <button id="ipad" type="button" class="btn btn-primary" onclick="Product(this.innerText)">ipad</button>
@@ -33,30 +39,45 @@
                 <img id="product_img" src="" class="img-fluid" alt="">
             </div>
             <div class="col-12 col-md-6">
-
-                <divclass="row" id="color">
+                <div class="row" id="color">
+                    <!-- <div class="'w-100 'd-flex''justify-content-center' 'justify-content-md-start">
+                       <h1>顏色</h1>
+                   </div> -->
                     <!-- 
                     <div class="col-6 col-md-6 ">
-                        <button class="color_btn btn btn-outline-secondary">
-                        <div class="p-5  d-flex flex-column justify-content-center align-items-center">
+                        <button class="colorbtn btn btn-outline-secondary w-100 imgurl="./apple/i11_white.png" ">
+                        <div class="p-3  d-flex flex-column justify-content-center align-items-center">
                             <i class="fas fa-circle" style="color:white;"></i>
                             <span>白色</span>
                         </div>
                         </button> 
                     </div>-->
+                </div>
 
+                <div class="row" id="genre">
+                    <!-- <div class="'w-100 'd-flex''justify-content-center' 'justify-content-md-start">
+                       <h1>儲存裝置</h1>
+                   </div> -->
+                    <!-- 
+                    <div class="col-6 col-md-6 ">
+                        <button class="colorbtn btn btn-outline-secondary w-100 price="24900" ">
+                        <div class="p-3  d-flex flex-column justify-content-center align-items-center">
+                           <p>64GB</p>
+                           <span>NT$24900</span>                        
+                        </div>
+                        </button> 
+                    </div>-->
+                </div>
+
+                <div class="row" id="cost">
+                    <!-- <div class="'w-100 'd-flex''justify-content-center' 'justify-content-md-start">
+                           <h1>計算價格</h1>
+                          </div> -->
+                    <!--<div class="col-12  d-flex  justify-content-center align-items-center">
+                           <p dispaly-5>NT$24900</p>                 
+                         </div> -->
+                </div>
             </div>
-
-            <div class="row" id="genre">
-
-            </div>
-
-            <div class="row" id="cost">
-
-            </div>
-
-
-
         </div>
 
     </div>
@@ -67,69 +88,61 @@
     <script>
         var products = {
             iphone: {
-                Primary: 'apple/iphone11.png',
+                Primary: './apple/iphone11.png',
                 Exterior: [
-                    { colorName: '白色', color: '#ffffff', src: 'apple/i11_white.png' },
-                    { colorName: '黑色', color: '#000000', src: 'apple/i11_black.png' },
-                    { colorName: '綠色', color: '#99FF99', src: 'apple/i11_green.png' },
-                    { colorName: '黃色', color: '#FFFF77', src: 'apple/i11_yellow.png' },
-                    { colorName: '紫色', color: '#D28EFF', src: 'apple/i11_purple.png' },
-                    { colorName: '紅色', color: '#CC0000', src: 'apple/i11_red.png' }
+                    { colorName: '白色', color: '#ffffff', url: './apple/i11_white.png' },
+                    { colorName: '黑色', color: '#000000', url: './apple/i11_black.png' },
+                    { colorName: '綠色', color: '#99FF99', url: './apple/i11_green.png' },
+                    { colorName: '黃色', color: '#FFFF77', url: './apple/i11_yellow.png' },
+                    { colorName: '紫色', color: '#D28EFF', url: './apple/i11_purple.png' },
+                    { colorName: '紅色', color: '#CC0000', url: './apple/i11_red.png' }
                 ],
                 Storge: [
                     { size: '64GB', price: 24900 },
                     { size: '128GB', price: 26900 },
-                    { size: '256GB', price: 30400 }
-                ],
+                    { size: '256GB', price: 30400 },
+                ]
             },
 
             ipad: {
-                Primary: 'apple/ipad.png',
+                Primary: './apple/ipad.png',
                 Exterior: [
-                    { colorName: '太空灰色', color: '#666666', src: 'apple/ipad_gray.png' },
-                    { colorName: '銀色', color: '#DDDDDD', src: 'apple/ipad_silver.png' },
-                    { colorName: '金色', color: '#FFCCCC', src: 'apple/ipad_pink.png' }
+                    { colorName: '太空灰色', color: '#666666', url: './apple/ipad_gray.png' },
+                    { colorName: '銀色', color: '#DDDDDD', url: './apple/ipad_silver.png' },
+                    { colorName: '金色', color: '#FFDDAA', url: './apple/ipad_pink.png' }
                 ],
                 Storge: [
                     { size: '32GB', price: 10900 },
-                    { size: '128GB', price: 13900 }
-                ],
-                Connect: [
-                    { network: 'wifi', price: 10900 },
-                    { network: 'wifi_mobnet', price: 15400 }
-                ],
+                    { size: '128GB', price: 13900 },
+                ]
             },
 
             mac: {
-                Primary: 'apple/mac.png',
+                Primary: './apple/mac.png',
                 Exterior: [
-                    { colorName: '太空灰色', color: '#666666', src: 'apple/mac_gray.png' },
-                    { colorName: '銀色', color: '#DDDDDD', src: 'apple/mac_silver.png' }
+                    { colorName: '太空灰色', color: '#666666', url: './apple/mac_gray.png' },
+                    { colorName: '銀色', color: '#DDDDDD', url: './apple/mac_silver.png' }
                 ],
                 Storge: [
                     { size: '128GB', price: 39900 },
                     { size: '256GB', price: 45900 },
                     { size: '512GB', price: 51900 },
                     { size: '1TB', price: 57900 },
-                    { size: '2TB', price: 69900 }
-                ],
+                    { size: '2TB', price: 69900 },
+                ]
             },
 
             watch: {
-                Primary: 'apple/watch.png',
+                Primary: './apple/watch.png',
                 Exterior: [
-                    { colorName: '銀色', color: '#DDDDDD', src: 'apple/watch_silver.png' },
-                    { colorName: '金色', color: '#FFCCCC', src: 'apple/watch_pink.png' },
-                    { colorName: '太空灰色', color: '#666666', src: 'apple/watch_gray.png' }
+                    { colorName: '銀色', color: '#DDDDDD', url: './apple/watch_silver.png' },
+                    { colorName: '金色', color: '#FFDDAA', url: './apple/watch_pink.png' },
+                    { colorName: '太空灰色', color: '#666666', url: './apple/watch_gray.png' }
                 ],
                 Storge: [
                     { size: '40Mm', price: 13400 },
-                    { size: '44Mm', price: 14400 }
-                ],
-                Connect: [
-                    { network: 'GPS', price: 13400 },
-                    { network: 'GPS_mobnet', price: 16900 }
-                ],
+                    { size: '44Mm', price: 14400 },
+                ]
             },
         };
 
@@ -140,72 +153,150 @@
         var cost_Region = document.getElementById('cost');
 
         function Product(pro) {
-            color_Region.innerHTML = null;
-            genre_Region.innerHTML = null;
-            cost_Region.innerHTML = null;
+            // console.log(pro);
+            color_Region.innerHTML = '';
+            genre_Region.innerHTML = '';
+            cost_Region.innerHTML = '';
             Img.setAttribute('src', products[pro].Primary);
 
-            // let color_title = document.createElement('h1');
-            // color_title.innerHTML='顏色';
-            // let color_text=document.getElementsByTagName('div')[0];
-            // h1.appendChild(color_title);
+            // 外觀
+            let color_Div = document.createElement('div')
+            let color_H1 = document.createElement('h1');
 
-            let color_text = document.createElement('div')
-            color_text.classList.add('w-100', 'd-flex', 'justify-content-center');
-            let color_title = document.createElement('h1');
-            color_title.innerText = '外觀';
-            color_text.appendChild(color_title);
-            color_Region.appendChild(color_text);
+            color_H1.innerText = '外觀';
+
+            color_Div.classList.add('w-100', 'd-flex', 'justify-content-center', 'justify-content-md-start');
+
+
+            color_Div.appendChild(color_H1);
+            color_Region.appendChild(color_Div);
+
+
 
             for (let item of products[pro].Exterior) {
-                let outdiv = document.createElement('div');
-                outdiv.classList.add('col-6', 'col-md-6');
-                outdiv.appendChild('color_Btn');
-
+                let color_outdiv = document.createElement('div');
                 let color_Btn = document.createElement('button');
-                color_Btn.classList.add('color_btn', 'color_btn-out-secondary', 'w-100', 'jystify-content-center');
-                color_Btn.setAttribute('pic', item.src);
+                let color_indiv = document.createElement('div');
+                let color_Icon = document.createElement('i');
+                let color_Span = document.createElement('span');
 
-                let indiv = document.createElement('div');
-                indiv.classList.add('p-4', 'd-flex', 'flex-column', 'jystify-content-center', 'align-items-center');
-                color_Btn.appendChild('indiv');
+                color_outdiv.classList.add('col-6', 'col-md-6');
 
-                let icon = document.createElement('i');
-                icon.classList.add('fas', 'fa-circle');
-                icon.style.color = item.color;
+                color_Btn.classList.add('colorbtn', 'btn', 'btn-outline-secondary', 'w-100');
+                color_Btn.setAttribute('imgurl', item.url);
 
-                let color_span = document.createElement('span');
-                color_span.innerText = item.colorName;
+                color_indiv.classList.add('p-3', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center');
 
-                indiv.appendChild('icon');
-                indiv.appendChild('color_span');
-                color_Region.appendChild('indiv');
+                color_Icon.classList.add('fas', 'fa-circle', 'display-3');
+                color_Icon.style.color = item.color;
+
+                color_Span.innerText = item.colorName;
+
+
+                color_indiv.appendChild(color_Icon);
+                color_indiv.appendChild(color_Span);
+                color_Btn.appendChild(color_indiv);
+                color_outdiv.appendChild(color_Btn);
+                color_Region.appendChild(color_outdiv);
             }
-            let all_colorBtns = document.getElementsByClassName('color_btn');
-            for (let Btn of all_colorBtns) {
-                Btn.addEventListener('click', function () {
-                    console.log(Btn);
 
+            let color_Btns = document.getElementsByClassName('colorbtn');
+
+            for (let i of color_Btns) {
+                i.addEventListener('click', function () {
+                    // console.log(i);
+                    // console.log(i.getAttributeNode('imgurl').value);
+                    Img.setAttribute('src', i.getAttributeNode('imgurl').value);
                 });
             }
 
 
+            //儲存裝置
+            let genre_Div = document.createElement('div');
+            let genre_H1 = document.createElement('h1');
+
+            genre_H1.innerText = '儲存裝置';
+
+            genre_Div.classList.add('w-100', 'd-flex', 'justify-content-center', 'justify-content-md-start');
+            genre_Div.appendChild(genre_H1);
+            genre_Region.appendChild(genre_Div);
+
+            for (let item of products[pro].Storge) {
+                let genre_outdiv = document.createElement('div');
+                let genre_Btn = document.createElement('button');
+                let genre_indiv = document.createElement('div');
+                let genre_p = document.createElement('p');
+                let genre_Span = document.createElement('span');
+
+                genre_outdiv.classList.add('col-6', 'col-md-6');
+
+                genre_Btn.classList.add('genrebtn', 'btn', 'btn-outline-secondary', 'w-100');
+                // 直接給genrebtn價錢
+                genre_Btn.setAttribute('genre_price', item.price);
+
+                genre_indiv.classList.add('p-3', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center');
+
+                genre_p.classList.add('display-5');
+                genre_p.innerText = item.size;
+
+                genre_Span.innerText = `NT$${item.price}`;
+
+                genre_indiv.appendChild(genre_p);
+                genre_indiv.appendChild(genre_Span);
+                genre_Btn.appendChild(genre_indiv);
+                genre_outdiv.appendChild(genre_Btn);
+                genre_Region.appendChild(genre_outdiv);
+            }
+
+            let genre_Btns = document.getElementsByClassName('genrebtn');
+
+            //計算價格
+            let cost_Div = document.createElement('div');
+            let cost_H1 = document.createElement('h1');
+
+            cost_H1.innerText = '計算價格';
+
+            cost_Div.classList.add('w-100', 'd-flex', 'justify-content-center', 'justify-content-md-start');
+
+            cost_Div.appendChild(cost_H1);
+            cost_Region.appendChild(cost_Div);
+
+
+            for (let item of genre_Btns) 
+            {
+                item.addEventListener('click', function () {
+
+                    cost_Region.innerHTML = '';
+
+                    let cost_Div = document.createElement('div');
+                    let cost_H1 = document.createElement('h1');
+
+                    cost_H1.innerText = '計算價格';
+
+                    cost_Div.classList.add('w-100', 'd-flex', 'justify-content-center', 'justify-content-md-start');
+                    cost_Div.appendChild(cost_H1);
+                    cost_Region.appendChild(cost_Div);
 
 
 
+                   
+                    let price = item.getAttributeNode('genre_price').value;
+                  
+                    let cost_outdiv = document.createElement('div');
+                    let cost_p = document.createElement('p');
+
+                    cost_outdiv.classList.add('col-12', 'd-flex', 'justify-content-center', 'align-items-center');
+                    cost_p.classList.add('display-5');
+                    cost_p.innerText = `NT$${price}`;
+
+                    cost_outdiv.appendChild(cost_p);
+                    cost_Region.appendChild(cost_outdiv);
+
+                });
+            }
         }
 
-
-
-
-
-
-
-
-
-
-
-
+   
     </script>
 
 

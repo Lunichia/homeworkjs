@@ -11,6 +11,78 @@
     <title>1A2B</title>
   </head>
   <body>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="container-fluid">
+        <div class="row mx-auto">
+          <div class="col-md-12  col-md-6 mx-auto">
+            <div class="btn-group btn-group-justified">
+              <a id="start" type="button" class="btn btn-default" onclick="startGame()">開始</a>
+              <a id="restart" type="button" class="btn btn-default"onclick="abortGame()">放棄重來</a>
+              <a id="cheat" type="button" class="btn btn-default" onclick="showAnswer()">看答案</a>
+            </div>
+            <br>
+            <ul id="guessResults" class="list-group">
+              
+            </ul>
+            <div class="input-group">
+              <span class="input-group-addon" id="sizing-addon1">猜數字</span>
+              <input id="userGuess" type="text" name="" class="form-control" value="" required="required">
+              <span class="input-group-btn">
+                <a id="guess" type="button" class="btn btn-default" onclick="doGuess()">猜!</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>          
+    </div>
+
+    <script>
+
+          var ans = "";
+          var A = 0, B = 0;
+
+          function startGame() {
+            while(ans.length<4){
+              var num = Math.floor(Math.random() * 10);
+              if(ans.indexOf(num) == -1){    //indexOf == -1 裡面沒有
+                ans += num;
+              }
+            }
+            alert("遊戲開始");
+          }
+          
+          function removeInput(){
+            var inputRemove=document.getElementById('userGuess');
+            inputRemove.value='';
+          }
+
+          function removeResult(){
+            var resultRemove=document.getElementById('guessResults');
+            resultRemove.innerHTML='';
+
+          }
+
+          function abortGame(){
+            ans = "";
+            removeInput();
+            removeResult();
+          }
+
+
+          function showAnswer(){
+           
+          }
+
+
+          function doGuess() {
+            var input = document.getElementById('userGuess');
+          }
+
+
+
+    </script>
+
+
    
 
     <!-- Optional JavaScript -->
