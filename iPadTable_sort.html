@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>iPadTable_sort</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    
+        <h1>Apple iPad</h1>
+    
+    
+    <script>
+
+        let _body = document.querySelector('body');
+        let _table = document.createElement('table');
+        _table.setAttribute("border", "2");
+        // _table.classList.add('table-info');
+        // _table.classList.add('mx-auto');
+
+        let _thead = document.createElement('thead');
+        let _tbody = document.createElement('tbody');
+        _table.appendChild(_thead);
+        _table.appendChild(_tbody);
+
+
+        function addThead(titleArray) {
+            let _tr = document.createElement('tr');
+            for (let item of titleArray) {
+                let _th = document.createElement('th');
+                _th.innerText = item;
+                _tr.appendChild(_th);
+            }
+            _thead.appendChild(_tr);
+        }
+
+        function addTbody(rowArray) {
+            let _tr = document.createElement('tr');
+            for (let ele in rowArray) {
+                let _td = document.createElement('td');
+                _td.innerText = rowArray[ele];
+                _tr.appendChild(_td);
+            }
+            _tbody.appendChild(_tr);
+        }
+
+        _body.append(_table);
+
+        // 升冪
+        function ascending(key){   
+            rowArray.sort(function(a,b){
+                return a[key]-b[key];
+            });
+        } 
+
+
+
+        let ipad = '';
+        window.onload = function () {
+            let xhr = new XMLHttpRequest;
+            xhr.onload = function () {
+                // 把資料轉成JSON檔
+                ipad = JSON.parse(this.responseText);
+                products = ipad.products;
+                // console.log(products);
+                var titleArray = Object.keys(products[0]);
+                // console.log(titleArray);
+                var rowArray =ipad.products;
+                var ascending;              
+                var Power_down;
+                
+                addThead(titleArray);
+                ipad.products.forEach(element => {
+                    addTbody(element);
+                });
+            }
+            xhr.open("GET", "https://bs-frontend.azurewebsites.net/api/Apple/IPad");
+            xhr.send();
+        }
+
+
+
+    </script>
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

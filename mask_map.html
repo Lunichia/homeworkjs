@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Map</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+
+        var map;
+        var Markers;
+        function initMap() {
+            var chu = { lat: 24.757133, lng: 120.952264 };
+            var map = new google.maps.Map(
+                document.getElementById('map'), { zoom: 15, center: chu });
+            chumarker = new google.maps.Marker({ position: chu, map: map, });
+
+            $.ajax({
+                type: 'Get',
+                url: 'https://findmasks.herokuapp.com/places',
+                // dataType: 'json',
+                success: function (response) {
+                    let longitude = [];   //經度(大)
+                    let latitude = [];    //緯度(小)               
+
+                    // debugger;
+                    for (var i = 0; i < response.features.length; i++) {
+                        longitude[i] = response.features[i].geometry.coordinates[1];
+                        latitude[i] = response.features[i].geometry.coordinates[0];
+                        if (response.features[i].properties.masksLeft || response.features[i].properties.childMasksLeft == 0) {
+                            Markers = new google.maps.Marker({
+                                position: { lat: longitude[i], lng: latitude[i] },
+                                map: map,
+                                icon: {
+                                    url: 'cry.png',
+                                    scaledSize: new google.maps.Size(30, 30)
+                                }
+                            });
+                        }
+                        else {
+                            Markers = new google.maps.Marker({
+                                position: { lat: longitude[i], lng: latitude[i] },
+                                map: map,
+                                icon: {
+                                    url: 'mask.png',
+                                    scaledSize: new google.maps.Size(40, 40)
+                                }
+                            });
+                        }
+                    
+                    }
+                    console.log(longitude[i]);
+                    debugger;
+                    // var position= { lat: latitude[i], lng: longitude[i] };
+                    // var map = new google.maps.Map(
+                    //     document.getElementById('map'), { zoom: 15, center: position});
+                    // var marker = new google.maps.Marker({ position: position, map:map });
+
+                    // console.log(response);
+                    // debugger;
+                }
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlKWP4uWjQIR3WDAWLAu6rUhBfc3_ppag &callback=initMap"
+        async defer></script>
+</body>
+
+</html>
