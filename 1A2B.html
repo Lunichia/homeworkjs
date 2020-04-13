@@ -1,97 +1,189 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>1A2B</title>
-  </head>
-  <body>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <div class="container-fluid">
-        <div class="row mx-auto">
-          <div class="col-md-12  col-md-6 mx-auto">
-            <div class="btn-group btn-group-justified">
-              <a id="start" type="button" class="btn btn-default" onclick="startGame()">開始</a>
-              <a id="restart" type="button" class="btn btn-default"onclick="abortGame()">放棄重來</a>
-              <a id="cheat" type="button" class="btn btn-default" onclick="showAnswer()">看答案</a>
-            </div>
-            <br>
-            <ul id="guessResults" class="list-group">
-              
-            </ul>
-            <div class="input-group">
-              <span class="input-group-addon" id="sizing-addon1">猜數字</span>
-              <input id="userGuess" type="text" name="" class="form-control" value="" required="required">
-              <span class="input-group-btn">
-                <a id="guess" type="button" class="btn btn-default" onclick="doGuess()">猜!</a>
-              </span>
-            </div>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <title>1A2B</title>
+</head>
+
+<body>
+  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="container-fluid">
+      <div class="row mx-auto text-align-center">
+        <div class="col-md-12  col-md-6 mx-auto">
+          <div class="btn-group btn-group-justified">
+            <a id="start" type="button" class="btn btn-default" onclick="startGame()">開始</a>
+            <a id="restart" type="button" class="btn btn-default" onclick="abortGame()">放棄重來</a>
+            <a id="cheat" type="button" class="btn btn-default" onclick="showAnswer()">看答案</a>
+          </div>
+          <br>
+          <ul id="guessResults" class="list-group">
+
+          </ul>
+          <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon1">猜數字</span>
+            <input id="userGuess" type="text" name="" class="form-control" value="" required="required">
+            <span class="input-group-btn">
+              <a id="guess" type="button" class="btn btn-default" onclick="doGuess()">猜!</a>
+            </span>
           </div>
         </div>
-      </div>          
+      </div>
     </div>
+  </div>
 
-    <script>
+  <script>
 
-          var ans = "";
-          var A = 0, B = 0;
+    var ans = "";
+    var a = 0, b = 0;
+    // var judge=0;
 
-          function startGame() {
-            while(ans.length<4){
-              var num = Math.floor(Math.random() * 10);
-              if(ans.indexOf(num) == -1){    //indexOf == -1 裡面沒有
-                ans += num;
-              }
-            }
-            alert("遊戲開始");
-          }
+    function startGame() {
+      while (ans.length < 4) {
+        var num = Math.floor(Math.random() * 10);
+        if (ans.indexOf(num) == -1) {    //indexOf == -1 裡面沒有
+          ans += num;
+        }
+      }
+      alert("遊戲開始");
+    }
 
-          function doGuess() {
-            var input = document.getElementById('userGuess').value;
-          }
+    function doGuess() {
+      var input = document.getElementById('userGuess').value;
+      if (input == '' || input.length != 4) {
+        alert('請輸入4位數');
+        removeInput();
+      }
+      for (let x = 0; x < input.length; x++) {
+        if (anwser[x] == input[x]) {
+          a++;
+        }
+        else if (anwser.indexOf(input[x]) != -1) {
+          b++;
+        }
+      }
+      var Result = document.getElementById('guessResults');
+      let li = document.createElement('li');
+      li.className = "list-group-item";
 
-          
-          function removeInput(){
-            var inputRemove=document.getElementById('userGuess');
-            inputRemove.value='';
-          }
-
-          function removeResult(){
-            var resultRemove=document.getElementById('guessResults');
-            resultRemove.innerHTML='';
-
-          }
-
-          function abortGame(){
-            ans = "";
-            removeInput();
-            removeResult();
-          }
-
-
-          function showAnswer(){
-            
-          }
-
-
-         
-
-
-
-    </script>
+      if (a == 4) {
+        li.innerHTML = `<span class="label label-success style="background-color:#green; color:#fff;" > ${a}A${b}B </span> ${input}`;
+        Result.appendChild(li);
+        alert('恭喜過關');
+        removeInput();
+      }
+      else {
+        li.innerHTML = `<span class="label label-danger style="background-color:#red; color:#fff;" > ${a}A${b}B </span> ${input}`;
+        Result.appendChild(li);
+        removeInput();
+      }
 
 
-   
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+      // else{
+
+      //   for (var x = 0; x < input.length; x++) {
+      //     for (var y = 0; y < input.length; y++) {
+      //       if (input[x] == input[y])
+      //         judge += 1;
+      //     }
+      //   }
+
+      //   if (judge != 4) {
+      //     alert('請不要輸入重複數字');
+      //     removeInput();
+      //   }
+
+      //   else{
+      //     for (var i = 0; i < ans.length; i++){
+      //       for (var j = 0; j < input.length; j++){
+      //         if (ans[i] == input[j] && i == j){
+      //           a += 1;
+      //         }
+      //         else if (ans[i] == input[j] && i != j){
+      //           b += 1;
+      //         }
+      //       }
+      //     }
+
+      //     var Result = document.getElementById('guessResults');
+      //     let li = document.createElement('li');
+      //     li.className = "list-group-item";
+
+      //     if (a == 4) {
+      //       li.innerHTML = `<span class="label label-success"> ${a}A${b}B </span> ${input}`;
+      //       Result.appendChild(li);
+      //       alert('恭喜過關');
+      //       removeInput();
+      //     }
+
+      //     else {
+      //       li.innerHTML = `<span class="label label-danger"> ${a}A${b}B </span> ${input}`;
+      //       Result.appendChild(li);
+      //       removeInput();
+      //     }
+
+      //   }
+
+      // }
+
+    }
+
+
+    function removeInput() {
+      var inputRemove = document.getElementById('userGuess');
+      inputRemove.value = '';
+    }
+
+    function removeResult() {
+      var resultRemove = document.getElementById('guessResults');
+      resultRemove.innerHTML = '';
+
+    }
+
+    function abortGame() {
+      ans = "";
+      removeInput();
+      removeResult();
+    }
+
+
+    function showAnswer() {
+      var ansNumber = '';
+      for (let i = 0; i < ans.length; i++) {
+        ansNumber += ans[i];
+      }
+      alert('答案是 :' + ansNumber);
+    }
+
+
+
+
+
+
+  </script>
+
+
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>

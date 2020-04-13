@@ -9,30 +9,42 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="fontawesome-free-5.12.1-web/css/all.css">
 
     <title>iPadTable_sort</title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
             list-style: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #84C1FF;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        thead tr th:nth-child(n+1):nth-child(-n+3) {
+            color: #FFBB66;
         }
     </style>
 </head>
 
 <body>
 
-    
-        <h1>Apple iPad</h1>
-    
-    
+
+    <h1>Apple iPad</h1>
+
+
     <script>
 
         let _body = document.querySelector('body');
         let _table = document.createElement('table');
-        _table.setAttribute("border", "2");
-        // _table.classList.add('table-info');
-        // _table.classList.add('mx-auto');
+        _table.setAttribute("border", "4");
+        _table.classList.add('table', 'w-50', 'mx-auto');
 
         let _thead = document.createElement('thead');
         let _tbody = document.createElement('tbody');
@@ -48,7 +60,16 @@
                 _tr.appendChild(_th);
             }
             _thead.appendChild(_tr);
+
+            var Title_th = document.querySelectorAll('thead tr th:nth-child(n+1):nth-child(-n+3)');
+
+            for (let i = 0; i < Title_th.length; i++) {
+               Title_th[i].innerHTML += '<i class="fas fa-sort"><i>';
+              
+            }
         }
+
+
 
         function addTbody(rowArray) {
             let _tr = document.createElement('tr');
@@ -63,11 +84,16 @@
         _body.append(_table);
 
         // 升冪
-        function ascending(key){   
-            rowArray.sort(function(a,b){
-                return a[key]-b[key];
+        
+        function ascending(key) {
+
+     
+            rowArray.sort(function (a, b) {
+                return a[key] - b[key];
             });
-        } 
+        }
+
+       
 
 
 
@@ -81,14 +107,16 @@
                 // console.log(products);
                 var titleArray = Object.keys(products[0]);
                 // console.log(titleArray);
-                var rowArray =ipad.products;
-                var ascending;              
+                var rowArray = ipad.products;
+                var ascending;
                 var Power_down;
-                
+
                 addThead(titleArray);
                 ipad.products.forEach(element => {
                     addTbody(element);
                 });
+
+
             }
             xhr.open("GET", "https://bs-frontend.azurewebsites.net/api/Apple/IPad");
             xhr.send();
