@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./Modules/MyHelper.js"></script>
+</head>
+
+<body>
+    <h1>Taiwan Address / Zip Code</h1>
+    <button>讀取網路資料</button>
+    <div id="msg"></div>
+
+
+    <script>
+        let _body = $g('body');
+        let _table = $c('table');
+        _table.setAttribute("border", "2");
+        let _thead = $c('thead');
+        let _tbody = $c('tbody');
+        let _tr = $c('tr');
+        let _th = $c('th');
+        let _td = $c('td');
+        _table.appendChild(_thead);
+        _table.appendChild(_tbody);
+        _tr.appendChild(_th);
+        _tr.appendChild(_td);
+        
+
+        let msg = $g('#msg');
+        window.onload = function () {
+            let xhr = new XMLHttpRequest;
+            xhr.onload = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    //  zipcodeArray:原始陣列資列
+                    zipcodeArray = JSON.parse(this.responseText);
+                    
+                    let ZipCode = [];
+                    zipcodeArray.forEach((item) => {
+                        // ZipCode.push({ City: "台北市", Districts: [{ District: "中正區", ZipCode: "100" }] });
+                        // ZipCode.push({ City: "桃園市", Districts: [{ District: "桃園區", ZipCode: "330" }] });
+                        // ZipCode.push({City: item.CityName});
+
+                        let _city=item.CityName;
+                        let _districts= [];
+                        item.AreaList.forEach((item ,index)=>{
+                            _districts.push({District: item.AreaName, ZipCode:item.ZipCode});
+                        });
+
+                        let _cityObject = {City:_city ,Districts:_districts};
+                        ZipCode.push(_cityObject);                   
+                    });
+                    debugger;
+                   
+                }
+                else {
+                    msg.textContent = '發生錯誤, HTTP response代碼:' + xhr.status;
+                }
+
+
+            }
+            xhr.open("GET", "http://127.0.0.1:5502/TaiwanAddress.json");
+            xhr.send();          
+        }
+
+    </script>
+</body>
+
+</html>
