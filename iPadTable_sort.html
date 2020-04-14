@@ -41,6 +41,8 @@
 
     <script>
 
+        //預設是升冪
+        var _isAsc = true;
         let _body = document.querySelector('body');
         let _table = document.createElement('table');
         _table.setAttribute("border", "4");
@@ -64,12 +66,11 @@
             var Title_th = document.querySelectorAll('thead tr th:nth-child(n+1):nth-child(-n+3)');
 
             for (let i = 0; i < Title_th.length; i++) {
-               Title_th[i].innerHTML += '<i class="fas fa-sort"><i>';
-              
+                Title_th[i].innerHTML += '<i class="fas fa-sort"><i>';
+                Title_th[i].addEventListener('click', Sort);
+
             }
         }
-
-
 
         function addTbody(rowArray) {
             let _tr = document.createElement('tr');
@@ -83,18 +84,62 @@
 
         _body.append(_table);
 
-        // 升冪
-        
-        function ascending(key) {
-
-     
-            rowArray.sort(function (a, b) {
-                return a[key] - b[key];
+        function Sort(key) {
+            // 排的資料
+            var products = ipad.products;
+            // 清空
+            _tbody.innerHTML = '';
+            console.log(key);
+            var Refresh_sort = products.sort(function (a, b) {
+                if (_isAsc) {
+                    // console.log(a[key.target.innerText]);
+                    if (typeof (a[key.target.innerText]) == 'string') {
+                        if(a[key.target.innerText]>= b[key.target.innerText])
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
+                    return a[key.target.innerText] - b[key.target.innerText];   // 由小到大
+                }
+                else 
+                {
+                    if (typeof (a[key.target.innerText]) == 'string') {
+                        if(a[key.target.innerText]<= b[key.target.innerText])
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
+                     return b[key.target.innerText] - a[key.target.innerText];  // 由大到小          
+                }
             });
+            console.log(Refresh_sort);
+            //console.log(products);
+            addRefresh(Refresh_sort);
+            _isAsc = !_isAsc;
         }
 
-       
-
+        // 長新的
+        function addRefresh(Refresh_sort) {
+            for (let x of Refresh_sort) {
+                let _tr = document.createElement('tr');
+                for (let y in x) {
+                    let _td = document.createElement('td');
+                    _td.innerText = x[y];
+                    _tr.appendChild(_td);
+                }
+                _tbody.appendChild(_tr);
+            }
+            _table.appendChild(_tbody);
+            _body.appendChild(_table);
+        }
 
 
         let ipad = '';
@@ -103,13 +148,12 @@
             xhr.onload = function () {
                 // 把資料轉成JSON檔
                 ipad = JSON.parse(this.responseText);
-                products = ipad.products;
+                var products = ipad.products;
                 // console.log(products);
                 var titleArray = Object.keys(products[0]);
                 // console.log(titleArray);
                 var rowArray = ipad.products;
-                var ascending;
-                var Power_down;
+
 
                 addThead(titleArray);
                 ipad.products.forEach(element => {
