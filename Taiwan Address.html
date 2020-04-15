@@ -4,68 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="./Modules/MyHelper.js"></script>
+    <title>TaiwanAddress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        body {
+            margin: auto;
+
+        }
+    </style>
+
 </head>
 
 <body>
-    <h1>Taiwan Address / Zip Code</h1>
-    <button>讀取網路資料</button>
-    <div id="msg"></div>
+    <h1>Taiwan Address / ZipCode</h1>
+    <!-- <button>讀取網路資料</button> -->
+    <div id='msg'></div>
+
+
+    <template id="templateTitle">
+        <tr>
+            <th>縣市</th>
+            <th>區域</th>
+            <th>郵遞區號</th>
+        </tr>
+    </template>
+
+    <template id="templateRow">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
 
 
     <script>
-        let _body = $g('body');
-        let _table = $c('table');
+
+        let _body = document.querySelector('body');
+        let _table = document.createElement('table');
         _table.setAttribute("border", "2");
-        let _thead = $c('thead');
-        let _tbody = $c('tbody');
-        let _tr = $c('tr');
-        let _th = $c('th');
-        let _td = $c('td');
+        // _table.classList.add('table', 'w-50', 'mx-auto');
+
+        let _thead = document.createElement('thead');
+        let _tbody = document.createElement('tbody');
         _table.appendChild(_thead);
         _table.appendChild(_tbody);
-        _tr.appendChild(_th);
-        _tr.appendChild(_td);
-        
+        _body.appendChild(_table);
 
-        let msg = $g('#msg');
+
+
+        function addThead(titleArray) {
+            let templateTitle =document.querySelector('#templateTitle');
+            _thead.appendChild(templateTitle.content);
+        }
+
+
+        function addTbody(rowArray) {
+            console.log(rowArray);
+            let templateRow = document.querySelector('#templateRow');
+            // rowArray[1]:District、ZipCode
+            for (let i = 0; i < rowArray[1].length; i++) {
+                let cloneContent = templateRow.content.cloneNode(true);
+                let tds = cloneContent.querySelectorAll('td');
+                tds[0].textContent = rowArray[0];
+                tds[1].textContent = rowArray[1][i].District;
+                tds[2].textContent = rowArray[1][i].ZipCode;
+                _tbody.appendChild(cloneContent);
+            }
+        }
+
+
+
+        let zipcodeArray = '';
         window.onload = function () {
             let xhr = new XMLHttpRequest;
             xhr.onload = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
-                    //  zipcodeArray:原始陣列資列
                     zipcodeArray = JSON.parse(this.responseText);
-                    
+
                     let ZipCode = [];
                     zipcodeArray.forEach((item) => {
-                        // ZipCode.push({ City: "台北市", Districts: [{ District: "中正區", ZipCode: "100" }] });
-                        // ZipCode.push({ City: "桃園市", Districts: [{ District: "桃園區", ZipCode: "330" }] });
-                        // ZipCode.push({City: item.CityName});
-
-                        let _city=item.CityName;
-                        let _districts= [];
-                        item.AreaList.forEach((item ,index)=>{
-                            _districts.push({District: item.AreaName, ZipCode:item.ZipCode});
+                        let _City = item.CityName;
+                        let _Districts = [];
+                        item.AreaList.forEach((item, index) => {
+                            // push():添加一個或多個元素至陣列的末端
+                            _Districts.push({ District: item.AreaName, ZipCode: item.ZipCode })
                         });
-
-                        let _cityObject = {City:_city ,Districts:_districts};
-                        ZipCode.push(_cityObject);                   
+                        let _CityObject = { City: _City, Districts: _Districts };
+                        ZipCode.push(_CityObject);
                     });
-                    debugger;
-                   
+                    addThead(ZipCode);
+                    //迭代陣列, 每個ele是一個Object, 再用.values()取值,回傳陣列
+                    ZipCode.forEach(ele => {
+                        addTbody(Object.values(ele));
+                    });
                 }
                 else {
-                    msg.textContent = '發生錯誤, HTTP response代碼:' + xhr.status;
+                    msg.textContent = '發生錯誤 , HTTP response代碼:' + xhr.status;
                 }
-
-
             }
+
             xhr.open("GET", "http://127.0.0.1:5502/TaiwanAddress.json");
-            xhr.send();          
+            xhr.send();
+
         }
 
     </script>
+
 </body>
 
 </html>
