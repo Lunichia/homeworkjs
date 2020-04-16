@@ -12,7 +12,8 @@
 
     <title>LOL</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
     <style>
         * {
             margin: 0;
@@ -22,6 +23,21 @@
 
         body {
             text-align: center;
+            background-color:#003060	;
+        }
+        h1{
+            color: #fff;
+            padding: 20px 0px;
+        }
+        h1:hover{
+            color:#FF5151;
+        }
+        h5{
+            font-family:Microsoft JhengHei;;
+            color: #fff;
+        }
+        h5:hover{
+           color:#FFA042 ;
         }
     </style>
 </head>
@@ -31,23 +47,21 @@
 
     <div class="container">
         <div class="row" id='all'>
+            
         </div>
     </div>
-
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="title"></h5>
+                    <h4 class="modal-title " id="exampleModalScrollableTitle" >Information</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
                 <div class="modal-body">
-                    <p></p>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
@@ -56,26 +70,52 @@
     </div>
 
     <script>
-      
-      let modal_Title = document.getElementById('title');
-      let modal_Body = document.getElementsByTagName('modal-body')[0];
+        
+        let modal_body = document.getElementsByClassName('modal-body')[0];
+        $.ajax({
+            type: "Get",
+            url: "https://raw.githubusercontent.com/Lunichia/homeworkjs/master/LOL.json",
+            success: function (response) {
 
-      $.ajax({
-          type:"Get",
-          url:"http://127.0.0.1:5502/LOL.json",
-          success: function (response) {
+                Champions = JSON.parse(response);
+                let All_row = document.getElementById('all');
+                for(let i = 0 ;i<Champions.length;i++){
+                    // console.log(Champions);                   
+                    let All_div = document.createElement('div');
+                    All_div.classList.add('col-md-2','col-4');
+                    _h5 = document.createElement('h5');
+                    _h5.textContent= Champions[i].name;
+                    All_div.appendChild(_h5);
+                    // let All_Title = document.getElementById('Name');
+                    // All_Title.textContent = Champions[i].name;
+                    // console.log(All_Title);
 
-            Champion = JSON.parse(response);           
-            let All = document.getElementById('all');
-            for(let i=0; i<Champion.length; i++){
-                let _div = document.createElement('div');
-                _div.classList.add('col-3','col-md-2');
+                    for (let item in Champions[i]){
+                        if(item=='icon'){
+                            let _img = document.createElement('img');
+                            _img.src = (Champions[i]['icon']);
+                            All_div.appendChild(_img);
+                            _img.addEventListener('click',Show_card);
+                            function Show_card(){                             
+                                $('#exampleModalScrollable').modal('toggle');
+                                modal_body.textContent = '';
+                                // let _h5 = document.getElementById('exampleModalScrollableTitle');
+                                // _h5.textContent =Champions[i].name;
+                                for(let ele in Champions[i].stats){
+                                    let _p = document.createElement('p');
+                                    _p.innerText = (`${ele}:${Champions[i].stats[ele]}`);
+                                    modal_body.appendChild(_p);
+                                }
+                            }
+
+                        }
+                    }
+                    All_row.appendChild(All_div);
+               
+                }
 
             }
-          }
-       
-
-      });
+        });
 
     </script>
 
