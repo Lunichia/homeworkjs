@@ -105,6 +105,7 @@
                                 // let _h5 = document.getElementById('exampleModalScrollableTitle');
                                 // _h5.textContent =Champions[i].name;
                                 for(let ele in Champions[i].stats){
+                                    debugger;
                                     let _p = document.createElement('p');
                                     _p.innerText = (`${ele}:${Champions[i].stats[ele]}`);
                                     modal_body.appendChild(_p);

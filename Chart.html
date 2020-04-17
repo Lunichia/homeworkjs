@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <style>
+       div{
+           width: 50%;
+           margin: auto;
+       }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="container ">
+      <!-- 宣告Canvas -->
+        <canvas id="lineChart"></canvas>
+    </div>
+    <script>
+        $.ajax({
+            type: 'Get',
+            url: 'https://raw.githubusercontent.com/apprunner/FileStorage/master/Temperature.json',
+            success: function (response) {
+
+                all = JSON.parse(response);                         
+                var ctx = document.getElementById("lineChart");
+                var chart = new Chart(ctx, {
+                    type: "line",                                    
+                    data: {
+                        labels: all.Label,                           //x軸label名稱(月份)
+                        datasets: [{
+                            label: all.City,                         //台北
+                            data: all.Data,                          //1~6月的實際資料值
+                            fill: false,                                      
+                            backgroundColor: 'rgba(0,0,165,0.3)',    
+                            borderColor: 'rgb(0,0,255)',            
+                            pointStyle: "circle",                    
+                            pointBackgroundColor: 'rgb(0,255,0)',
+                            pointRadius: 5,                        
+                            pointHoverRadius: 10,                   
+
+                        }]
+                    },
+                    options: {
+                        responsive: true,                           
+
+                        title: {
+                            display: true,
+                            fontSize: 26,
+                            text: '1-6 月氣溫平均值'
+                        },
+
+                        tooltips: {
+                            mode: 'point',
+                            intersect: true,
+                        },
+
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                fontColor: 'black',
+                            }
+                        }
+                    }
+                });
+
+
+            }
+        })
+
+    </script>
+</body>
+
+</html>
