@@ -41,7 +41,7 @@
             <div class="col-12 col-md-6">
                 <div class="row" id="color">
                     <!-- <div class="'w-100 'd-flex''justify-content-center' 'justify-content-md-start">
-                       <h1>顏色</h1>
+                       <h1>外觀</h1>
                    </div> -->
                     <!-- 
                     <div class="col-6 col-md-6 ">
@@ -152,12 +152,15 @@
         var genre_Region = document.getElementById('genre');
         var cost_Region = document.getElementById('cost');
 
+      
         function Product(pro) {
             // console.log(pro);
             color_Region.innerHTML = '';
             genre_Region.innerHTML = '';
             cost_Region.innerHTML = '';
             Img.setAttribute('src', products[pro].Primary);
+            // console.log(products[pro].Primary);
+            
 
             // 外觀
             let color_Div = document.createElement('div')
@@ -264,9 +267,7 @@
 
             for (let item of genre_Btns) 
             {
-                item.addEventListener('click', function () {
-
-                    
+                item.addEventListener('click', function () {                 
                     cost_Region.innerHTML = '';
 
                     let cost_Div = document.createElement('div');

@@ -1,30 +1,206 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Calender</title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
             list-style: none;
         }
-      
+        table thead th{
+            background-color:#C4E1FF;
+        }
+        thead tr th{
+            font-family: DFKai-sb;
+        }
+        thead tr th:nth-child(1){
+            background-color:#66B3FF ;
+        }
+        thead tr th:nth-child(7){
+            background-color:#66B3FF ;
+        }
+
+
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center ">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"  class="btn-sm" id="lastmonth">&laquo;</span>
+                </a>
+            </li>
+
+            <button type="button" class="btn btn-light" id="months">Months</button>
+           
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true" class="btn-sm"  id="nextmonth">&raquo;</span>
+                </a>
+            </li>
+            <button type="button" class="btn btn-light ml-5">新增事項</button>
+        </ul>
+       
+    </nav>
+    <div class="container">
+        <div class="row">
+            <table class="table  table-bordered text-center" id="datwZone">
+                <thead>
+                    <tr>
+                        <th>SUN</th>
+                        <th>MON</th>
+                        <th>TUE</th>
+                        <th>WED</th>
+                        <th>THU</th>
+                        <th>FRI</th>
+                        <th>THR</th>
+                    </tr>
+    
+                </thead>
+    
+                <tbody id="dateTable">
+                    <tr>
+    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+    </div>
    
-  
+
+    <script>
+        
+        //宣告陣列放入每個月份
+        var Month_array = new Array();
+        Month_array[0]="January";
+        Month_array[1] = "February";
+        Month_array[2] = "March";
+        Month_array[3] = "April";
+        Month_array[4] = "May";
+        Month_array[5] = "June";
+        Month_array[6] = "July";
+        Month_array[7] = "August";
+        Month_array[8] = "September";
+        Month_array[9] = "October";
+        Month_array[10] = "November";
+        Month_array[11] = "December";
+
+        var Now_time = new Date();            //現在的時間
+        // console.log(Now_time);
+        var Now_month = Now_time.getMonth();  //月份(從0開始)
+        // console.log(Now_month);
+        var Now_year = Now_time.getFullYear();  //年
+        // console.log(Now_year);
+
+        var All_months =document.getElementById('months')
+        All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' '; //年+月
+
+       
+        let Last_month = document.getElementById('lastmonth');
+        Last_month.addEventListener('click',Show_last);
+        function Show_last(){
+                //若是1月年要-1,月份會變成12
+                if((Month_array[0]==Month_array[Now_month]))
+                {                 
+                    Now_year=Now_year-1;
+                    Now_month=11;
+                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
+                }
+                // 今年的月份-1
+                else 
+                {                    
+                    Now_month = Now_month-1;
+                    // console.log(Now_month);
+                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
+                }              
+        }
+
+        let Next_month = document.getElementById('nextmonth');
+        Next_month.addEventListener('click',Show_Next);
+        function Show_Next(){
+                //若是12月年要+1,月份變成1月
+                if((Month_array[11]==Month_array[Now_month]))
+                {
+                    Now_year=Now_year+1;
+                    console.log(Now_year);
+                    Now_month=0;
+                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
+                }
+                // 今年的月份+1
+                else
+                {
+                    Now_month = Now_month+1;
+                    console.log(Now_month);
+                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
+                }
+        }
+        
+
+      
+
+
+
+
+        // let _tr = document.createElement('tr');
+        // for(let i = 0 ;i<)
+        // let _td = document.createElement('td');
+
+
+
+        //現在的日期
+        // var Now_date = Now_time.getDate(); 
+        // console.log(Now_date);
+
+        //每週的第幾天
+        // var Now_day = Now_time.getDay();   
+        // console.log(Now_day);
+
+
+        //上個月的最後一天
+        // var LastDayPrevMonth = new Date(Now_year,Now_month, 0).getDate(); 
+        // console.log(LastDayPrevMonth);
+       
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>
