@@ -11,26 +11,39 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Calender</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        table thead th{
-            background-color:#C4E1FF;
-        }
-        thead tr th{
+        td {
+            width: 100px;
+            height: 100px;
+            font-size: 20px;
             font-family: DFKai-sb;
         }
-        thead tr th:nth-child(1){
-            background-color:#66B3FF ;
-        }
-        thead tr th:nth-child(7){
-            background-color:#66B3FF ;
+
+        td:hover {
+            background-color: #ACD6FF;
         }
 
+        table thead th {
+            background-color: #C4E1FF;
+        }
 
+        thead tr th {
+            font-family: DFKai-sb;
+        }
+
+        thead tr th:nth-child(1) {
+            background-color: #66B3FF;
+        }
+
+        thead tr th:nth-child(7) {
+            background-color: #66B3FF;
+        }
+
+        .Weekend {
+            color: red;
+        }
     </style>
 </head>
 
@@ -39,20 +52,20 @@
         <ul class="pagination justify-content-center ">
             <li class="page-item">
                 <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true"  class="btn-sm" id="lastmonth">&laquo;</span>
+                    <span aria-hidden="true" class="btn-sm" id="lastmonth">&laquo;</span>
                 </a>
             </li>
 
             <button type="button" class="btn btn-light" id="months">Months</button>
-           
+
             <li class="page-item">
                 <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true" class="btn-sm"  id="nextmonth">&raquo;</span>
+                    <span aria-hidden="true" class="btn-sm" id="nextmonth">&raquo;</span>
                 </a>
             </li>
-            <button type="button" class="btn btn-light ml-5">新增事項</button>
+            <button id="add_item" type="button" class="btn btn-light ml-5">新增事項</button>
         </ul>
-       
+
     </nav>
     <div class="container">
         <div class="row">
@@ -67,25 +80,87 @@
                         <th>FRI</th>
                         <th>THR</th>
                     </tr>
-    
                 </thead>
-    
+
                 <tbody id="dateTable">
                     <tr>
-    
+
                     </tr>
                 </tbody>
+
+                <!-- 新增事件的modal -->
+                <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title " id="exampleModalScrollableTitle">新增事項</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>日期:<input type="date" id="Date" name="Date"></label>
+                                    <label>色彩:<input type="color" id="Color" name="Color"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject" class="col-form-label">事項內容 :</label>
+                                    <textarea class="form-control" id="subject"></textarea>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label for="subject" class="col-form-label">Google Map:</label>
+                                    <textarea class="form-control" id="subject"></textarea>                           
+                                </div> -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" id="Click_confirm">確認</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 修改、刪除事件的modal -->
+                <div class="modal fade" id="exampleModalScrollable_modify_delete" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title " id="exampleModalScrollableTitle">事項</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>日期:<input id="Date2" name="Date2"></label>
+                                    <label>色彩:<input type="color" id="Color2" name="Color2"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject" class="col-form-label" id="Event_content">事項內容 :</label>
+                                    <textarea class="form-control" id="subject2"></textarea>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label for="subject" class="col-form-label">Google Map:</label>
+                                    <textarea class="form-control" id="subject"></textarea>                           
+                                </div> -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" id="Click_modify">修改</button>
+                                <button type="button" class="btn btn-outline-dark" id="Click_delete">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </table>
         </div>
-    
     </div>
-   
+
 
     <script>
-        
         //宣告陣列放入每個月份
         var Month_array = new Array();
-        Month_array[0]="January";
+        Month_array[0] = "January";
         Month_array[1] = "February";
         Month_array[2] = "March";
         Month_array[3] = "April";
@@ -98,81 +173,298 @@
         Month_array[10] = "November";
         Month_array[11] = "December";
 
-        var Now_time = new Date();            //現在的時間
+
+        // var dateA = new Date(2020,3,22);             //參數 年、月、日
+
+        // console.log(dataA.getFullYear());            //年
+        // console.log(dataA.getMonth());               //月
+        // console.log(dataA.getDate());                //日
+        // console.log(dataA.getDay());                 //星期 禮拜天是0
+        // console.log(new Date(2020,4,0).getDate());   //這個月有幾天=下個月的第0天     
+
+
+        var Now_time = new Date();                    //new不帶參數就是現在的時間
         // console.log(Now_time);
-        var Now_month = Now_time.getMonth();  //月份(從0開始)
-        // console.log(Now_month);
-        var Now_year = Now_time.getFullYear();  //年
+        var Now_year = Now_time.getFullYear();       //年
         // console.log(Now_year);
-
-        var All_months =document.getElementById('months')
-        All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' '; //年+月
-
-       
-        let Last_month = document.getElementById('lastmonth');
-        Last_month.addEventListener('click',Show_last);
-        function Show_last(){
-                //若是1月年要-1,月份會變成12
-                if((Month_array[0]==Month_array[Now_month]))
-                {                 
-                    Now_year=Now_year-1;
-                    Now_month=11;
-                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
-                }
-                // 今年的月份-1
-                else 
-                {                    
-                    Now_month = Now_month-1;
-                    // console.log(Now_month);
-                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
-                }              
-        }
-
-        let Next_month = document.getElementById('nextmonth');
-        Next_month.addEventListener('click',Show_Next);
-        function Show_Next(){
-                //若是12月年要+1,月份變成1月
-                if((Month_array[11]==Month_array[Now_month]))
-                {
-                    Now_year=Now_year+1;
-                    console.log(Now_year);
-                    Now_month=0;
-                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
-                }
-                // 今年的月份+1
-                else
-                {
-                    Now_month = Now_month+1;
-                    console.log(Now_month);
-                    All_months.innerHTML = Now_year+' '+Month_array[Now_month]+' ';
-                }
-        }
-        
-
-      
-
-
-
-
-        // let _tr = document.createElement('tr');
-        // for(let i = 0 ;i<)
-        // let _td = document.createElement('td');
-
-
-
-        //現在的日期
-        // var Now_date = Now_time.getDate(); 
+        var Now_month = Now_time.getMonth();         //月份(從0開始)
+        // console.log(Now_month);
+        var Now_date = Now_time.getDate();           //日期
         // console.log(Now_date);
 
-        //每週的第幾天
-        // var Now_day = Now_time.getDay();   
-        // console.log(Now_day);
+        var _tbody = document.getElementById('dateTable');
+        var All_months = document.getElementById('months')
+        All_months.innerHTML = Now_year + ' ' + Month_array[Now_month] + ' '; //年+月
+        // console.log(All_months);
+
+        Rows();
+        let Last_month = document.getElementById('lastmonth');
+        Last_month.addEventListener('click', Show_last);
+        function Show_last() {
+            //若是前年1月年要-1,月份變成12
+            if ((Month_array[0] == Month_array[Now_month])) {
+                Now_year = Now_year - 1;
+                Now_month = 11;
+                All_months.innerHTML = Now_year + ' ' + Month_array[Now_month] + ' ';
+            }
+            // 今年的月份-1
+            else {
+                Now_month = Now_month - 1;
+                // console.log(Now_month);
+                All_months.innerHTML = Now_year + ' ' + Month_array[Now_month] + ' ';
+            }
+            Rows();
+        }
 
 
-        //上個月的最後一天
-        // var LastDayPrevMonth = new Date(Now_year,Now_month, 0).getDate(); 
-        // console.log(LastDayPrevMonth);
-       
+        let Next_month = document.getElementById('nextmonth');
+        Next_month.addEventListener('click', Show_Next);
+        function Show_Next() {
+            //若是今年12月年要+1,月份變成1月
+            if ((Month_array[11] == Month_array[Now_month])) {
+                Now_year = Now_year + 1;
+                // console.log(Now_year);
+                Now_month = 0;
+                All_months.innerHTML = Now_year + ' ' + Month_array[Now_month] + ' ';
+
+            }
+            //今年的月份+1
+            else {
+                Now_month = Now_month + 1;
+                // console.log(Now_month);
+                All_months.innerHTML = Now_year + ' ' + Month_array[Now_month] + ' ';
+            }
+            Rows();
+        }
+
+
+        function Rows() {
+            _tbody.innerText = '';
+            // 這個月的第一天
+            var FirstDay_month = new Date(Now_year, Now_month, 1);
+            // console.log(FirstDay_month);
+
+            //這個月的第一天在星期幾
+            var FM = FirstDay_month.getDay();
+            // console.log(FM);
+
+            //這個月的最後一天=下個月的第0天
+            var LastDay_month = new Date(Now_year, Now_month + 1, 0).getDate();
+            // console.log(LastDay_month);
+
+
+            var record = 1; //起始數值
+            var _tr = document.createElement('tr');
+            for (let i = 0; i < 7; i++) {
+                var _td = document.createElement('td');
+                if (i == 0 || i == 6) {              //讓週末顏色顯示為紅色
+                    _td.classList.add('Weekend');
+                }
+                _td.addEventListener('click', Add);
+                if (i >= FM) {
+                    _td.innerText = record;
+                    // 現在的年、月、日有新增做以下的事情
+                    if (localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`) != null) {
+                        // 字串轉物件才可使用
+                        SchedulesObj = JSON.parse(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`));
+                        let _ul = document.createElement('ul');
+                        SchedulesObj.forEach((element, index) => {
+                            let _li = document.createElement('li');
+                            let _span = document.createElement('span');
+                            _li.setAttribute('Index', index);     //找出新增事項分別是第幾個
+                            _span.setAttribute('Index', index);
+                            _li.style.color = element.Colors;
+                            _li.style.textAlign = 'left';
+                            _span.style.color = '#000';
+                            _span.innerText = element.Title;
+                            _li.appendChild(_span);
+                            _ul.appendChild(_li);
+                        });
+                        _td.appendChild(_ul);
+                    }
+                    record++;
+                }
+                _tr.appendChild(_td);
+            }
+            _tbody.appendChild(_tr);
+            //按下li要跳出修改、刪除的modal並顯示當前的資料
+            var Total_li = document.getElementsByTagName('li');
+            for (let li of Total_li) {
+                li.addEventListener('click', Modify_Delete);
+            }
+
+            var All_rows = Math.ceil(((LastDay_month - record + 1) / 7));
+            // console.log(All_rows);
+
+            for (let row = 0; row < All_rows; row++) {
+                var _tr = document.createElement('tr');
+                // debugger; 
+                for (let j = 0; j < 7; j++) {
+                    var _td = document.createElement('td');
+                    if (j == 0 || j == 6) {              //讓週末顏色顯示為紅色
+                        _td.classList.add('Weekend');
+                    }
+                    _td.addEventListener('click', Add);
+
+                    if (record <= LastDay_month) {
+                        _td.innerText = record;
+                        if (localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`) != null) {
+                            // console.log(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`))
+                            let SchedulesObj = JSON.parse(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`));
+                            // console.log(SchedulesObj);
+                            let _ul = document.createElement('ul');
+                            SchedulesObj.forEach((element, index) => {
+                                let _li = document.createElement('li');
+                                let _span = document.createElement('span');
+                                _li.setAttribute('index', index);
+                                _span.setAttribute('index', index);
+                                _li.style.color = element.Colors;
+                                _span.innerText = element.Title;
+                                _span.style.color = '#000';
+                                _li.style.textAlign = 'left';
+                                _li.appendChild(_span);
+                                _ul.appendChild(_li);
+                            });
+                            _td.appendChild(_ul);
+                        }
+                    }
+                    record++;
+                    _tr.appendChild(_td);
+                    // debugger;              
+                }
+                _tbody.appendChild(_tr);
+            }
+
+            //li長完後監看式才有作用
+            var Total_li = document.getElementsByTagName('li');
+            for (let li of Total_li) {
+                li.addEventListener('click', Modify_Delete);
+            }
+
+        }
+
+        // 按下新增事件要跳出的視窗
+        let Increase = document.getElementById('add_item');
+        Increase.addEventListener('click', Add)
+        function Add() {
+            //清空內容
+            // console.log('Hello');
+            let _Date = document.getElementById('Date').value = '';
+            let _Color = document.getElementById('Color').value = '';
+            let _Subject = document.getElementById('subject').value = '';
+            $('#exampleModalScrollable').modal('toggle');
+        }
+        //按下確認後儲存資料並顯示於畫面上
+        let Make_sure = document.getElementById('Click_confirm');
+        Make_sure.addEventListener('click', Confirm)
+        function Confirm() {
+            // 日期的值以-分隔
+            let Date = document.querySelector('#Date').value.split('-');
+            console.log(Date);
+            let Content = document.querySelector('#subject');
+            let Color = document.querySelector('#Color');
+            // 字串轉整數才可把0去掉 、json的資料要是字串所以要從整數再轉回字串
+            let Key = `${parseInt(Date[0]).toString()}-${parseInt(Date[1]).toString()}-${parseInt(Date[2]).toString()}`; //Date[0]、Date[1]、Date[2]:年、月、日
+            let Schedules;
+            // 從存取的資料再拿到後判斷Key是否被使用
+            if (localStorage.getItem(Key) != null) {
+                Schedules = JSON.parse(localStorage.getItem(Key));
+                // 當選擇同一個Key時可再把資料新增
+                Schedules.push(
+                    {
+                        Title: Content.value,
+                        Colors: Color.value,
+                    }
+                );
+            }
+            // 當資料是空的按下確認後Key第一次被使用
+            else {
+                Schedules =
+                    [
+                        {
+                            Title: Content.value,
+                            Colors: Color.value,
+                            // Start_time:ST.value,
+                            // End_time:EN.value
+                        }
+                    ];
+            }
+            //值轉字串
+            localStorage.setItem(Key, JSON.stringify(Schedules));
+            //長回來
+            Rows();
+        }
+
+        //按下li要跳出修改、刪除的modal並顯示當前的資料
+        function Modify_Delete(event) {
+            event.stopPropagation();      //停止冒泡
+            $('#exampleModalScrollable_modify_delete').modal('toggle');
+            let Obj = `${Now_year}-${Now_month + 1}-${event.target.offsetParent.childNodes[0].data}`;
+            // console.log(Obj);
+            let Da = document.getElementById('Date2');
+            let Co = document.getElementById('Color2');
+            let Ev = document.getElementById('subject2');
+            let _Index = parseInt(event.target.getAttributeNode('index').value);   //抓到index的值轉成int型態
+            let Data = JSON.parse(localStorage.getItem(Obj));                     //從localStorage取值
+            Da.value = Obj;
+            Ev.value = Data[_Index].Title;
+            // console.log(Ev.value);
+            Co.value = Data[_Index].Colors;
+
+            //刪除
+            let _Delete = document.getElementById('Click_delete');
+            _Delete.addEventListener('click', Strike_out)
+            function Strike_out() {
+                localStorage.getItem(Data);
+                // console.log(Data);
+          
+
+            }
+        }
+
+        //修改
+        let _Modify = document.getElementById('Click_modify');
+        _Modify.addEventListener('click', Revise)
+        function Revise() {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
