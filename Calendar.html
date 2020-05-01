@@ -20,7 +20,9 @@
             font-size: 20px;
             font-family: DFKai-sb;
         }
-
+        /* table{
+            box-sizing: border-box;
+        } */
         td:hover {
             background-color: #ACD6FF;
         }
@@ -120,7 +122,7 @@
                     </div>
                 </div>
                 <!-- 修改、刪除事件的modal -->
-                <div class="modal fade" id="exampleModalScrollable_modify_delete" tabindex="-1" role="dialog"
+                <div class="modal fade" id="_modify_deleteModalScrollable" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                         <div class="modal-content">
@@ -130,7 +132,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div id='input_area' class="modal-body">
                                 <div class="form-group">
                                     <label>日期:<input id="Date2" name="Date2"></label>
                                     <label>色彩:<input type="color" id="Color2" name="Color2"></label>
@@ -197,6 +199,8 @@
         All_months.innerHTML = Now_year + ' ' + Month_array[Now_month] + ' '; //年+月
         // console.log(All_months);
 
+        var Current_index;
+
         Rows();
         let Last_month = document.getElementById('lastmonth');
         Last_month.addEventListener('click', Show_last);
@@ -260,20 +264,22 @@
                 if (i == 0 || i == 6) {              //讓週末顏色顯示為紅色
                     _td.classList.add('Weekend');
                 }
-                _td.addEventListener('click', Add);
+               
                 if (i >= FM) {
                     _td.innerText = record;
+                    _td.addEventListener('click', Add);
                     // 現在的年、月、日有新增做以下的事情
                     if (localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`) != null) {
                         // 字串轉物件才可使用
-                        SchedulesObj = JSON.parse(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`));
+                        let SchedulesObj = JSON.parse(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`));
                         let _ul = document.createElement('ul');
                         SchedulesObj.forEach((element, index) => {
                             let _li = document.createElement('li');
                             let _span = document.createElement('span');
-                            _li.setAttribute('Index', index);     //找出新增事項分別是第幾個
+                            _li.setAttribute('Index', index);             //知道每一筆li的索引值
                             _span.setAttribute('Index', index);
                             _li.style.color = element.Colors;
+                            _li.addEventListener('click', Modify_Delete);  //(li長完後監看式才有作用)
                             _li.style.textAlign = 'left';
                             _span.style.color = '#000';
                             _span.innerText = element.Title;
@@ -287,11 +293,7 @@
                 _tr.appendChild(_td);
             }
             _tbody.appendChild(_tr);
-            //按下li要跳出修改、刪除的modal並顯示當前的資料
-            var Total_li = document.getElementsByTagName('li');
-            for (let li of Total_li) {
-                li.addEventListener('click', Modify_Delete);
-            }
+
 
             var All_rows = Math.ceil(((LastDay_month - record + 1) / 7));
             // console.log(All_rows);
@@ -300,14 +302,13 @@
                 var _tr = document.createElement('tr');
                 // debugger; 
                 for (let j = 0; j < 7; j++) {
-                    var _td = document.createElement('td');
+                   let _td = document.createElement('td');
                     if (j == 0 || j == 6) {              //讓週末顏色顯示為紅色
                         _td.classList.add('Weekend');
-                    }
-                    _td.addEventListener('click', Add);
-
+                    }                
                     if (record <= LastDay_month) {
                         _td.innerText = record;
+                        _td.addEventListener('click', Add);
                         if (localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`) != null) {
                             // console.log(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`))
                             let SchedulesObj = JSON.parse(localStorage.getItem(`${Now_year}-${Now_month + 1}-${record}`));
@@ -319,6 +320,7 @@
                                 _li.setAttribute('index', index);
                                 _span.setAttribute('index', index);
                                 _li.style.color = element.Colors;
+                                _li.addEventListener('click', Modify_Delete);
                                 _span.innerText = element.Title;
                                 _span.style.color = '#000';
                                 _li.style.textAlign = 'left';
@@ -334,13 +336,6 @@
                 }
                 _tbody.appendChild(_tr);
             }
-
-            //li長完後監看式才有作用
-            var Total_li = document.getElementsByTagName('li');
-            for (let li of Total_li) {
-                li.addEventListener('click', Modify_Delete);
-            }
-
         }
 
         // 按下新增事件要跳出的視窗
@@ -360,7 +355,7 @@
         function Confirm() {
             // 日期的值以-分隔
             let Date = document.querySelector('#Date').value.split('-');
-            console.log(Date);
+            // console.log(Date);
             let Content = document.querySelector('#subject');
             let Color = document.querySelector('#Color');
             // 字串轉整數才可把0去掉 、json的資料要是字串所以要從整數再轉回字串
@@ -375,7 +370,7 @@
                         Title: Content.value,
                         Colors: Color.value,
                     }
-                );
+                )
             }
             // 當資料是空的按下確認後Key第一次被使用
             else {
@@ -384,8 +379,6 @@
                         {
                             Title: Content.value,
                             Colors: Color.value,
-                            // Start_time:ST.value,
-                            // End_time:EN.value
                         }
                     ];
             }
@@ -395,42 +388,59 @@
             Rows();
         }
 
-        //按下li要跳出修改、刪除的modal並顯示當前的資料
+        //呼叫Modify_Delete(按下li要跳出修改、刪除的modal並顯示當前的資料)
         function Modify_Delete(event) {
             event.stopPropagation();      //停止冒泡
-            $('#exampleModalScrollable_modify_delete').modal('toggle');
-            let Obj = `${Now_year}-${Now_month + 1}-${event.target.offsetParent.childNodes[0].data}`;
+            $('#_modify_deleteModalScrollable').modal('toggle');
+            let Obj = `${Now_year}-${Now_month + 1}-${event.target.offsetParent.childNodes[0].data}`; //從localStorage取Key
             // console.log(Obj);
             let Da = document.getElementById('Date2');
             let Co = document.getElementById('Color2');
             let Ev = document.getElementById('subject2');
-            let _Index = parseInt(event.target.getAttributeNode('index').value);   //抓到index的值轉成int型態
-            let Data = JSON.parse(localStorage.getItem(Obj));                     //從localStorage取值
+            let _Index = parseInt(event.target.getAttributeNode('index').value);  //抓到index的值轉成int型態
+            Current_index = _Index;
+            console.log(Current_index);
+            let Data = JSON.parse(localStorage.getItem(Obj));   //從localStorage取value
+            console.log(Data);
             Da.value = Obj;
             Ev.value = Data[_Index].Title;
-            // console.log(Ev.value);
             Co.value = Data[_Index].Colors;
-
-            //修改
-            // let _Modify = document.getElementById('Click_modify');
-            // _Modify.addEventListener('click', Revise)
-            // function Revise() {
-
-            // }
-
-
-            //刪除
-            let _Delete = document.getElementById('Click_delete');
-            _Delete.addEventListener('click', Strike_out)
-            function Strike_out() {
-                localStorage.getItem(Data);
-                // console.log(Data);
-          
-
-            }
         }
 
-       
+        //修改
+        let _Modify = document.getElementById('Click_modify');
+        _Modify.addEventListener('click', Modify_todo)
+        function Modify_todo() {
+            let Obj = document.querySelector('#Date2').value;
+            let Todo_item = document.querySelector('#subject2').value;
+            // console.log(Todo_item);
+            let Todo_color = document.querySelector('#Color2').value;
+            // console.log(Todo_color);
+            let Data = JSON.parse(localStorage.getItem(Obj));
+            //覆蓋值
+            Data[Current_index] = 
+            {
+                Title: Todo_item,
+                Colors: Todo_color
+            };
+            localStorage.setItem(Obj, JSON.stringify(Data));
+            Rows();
+
+        }
+
+
+        //刪除
+        let _Delete = document.getElementById('Click_delete');
+        _Delete.addEventListener('click', Delete_todo);
+        function Delete_todo() {
+            let Obj = document.querySelector('#Date2').value;
+            let Data = JSON.parse(localStorage.getItem(Obj));
+            Data.splice(Current_index, 1);
+            localStorage.setItem(Obj, JSON.stringify(Data));
+            Rows();
+        }
+
+
 
 
 
