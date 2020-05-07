@@ -1,26 +1,245 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>puzzle</title>
-  </head>
-  <body>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <title>puzzle</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .puzzleArea {
+      position: relative;
+    }
+
+    #puzzleArea * {
+      vertical-align: bottom;
+    }
+
+    .col-12 {
+      /* display: flex;
+      justify-content: center; */
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+
+    .puzzleArea canvas {
+      display: table-cell;
+      border: 1px solid #000;
+      cursor: pointer;
+      position: absolute;
+    }
+    .ansPic{
+      display: flex;
+      justify-content: center;
+      margin-left: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="col-12 col-md-6 d-flex justify-content-center">
+    <div class="button_area">
+      <!-- 控制區 -->
+      <button type="button" name="" id="startGame" class="btn btn-info" onclick="startBtn()">開始遊戲</button>
+      <button type="button" name="" id="autocomplete" class="btn btn-info ml-3">自動完成</button>
+    </div>
+    <!-- 選擇難易度 -->
+    <div>
+      <select class="form-control ml-3 btn btn-info" id="droupdown" onchange="change()">
+        <option selected value="3">3x3</option>
+        <option value="4">4x4</option>
+        <option value="5">5x5</option>
+      </select>
+    </div>
+    <div>
+      <button type="button" name="" id="showAnswer" class="btn btn-info ml-5">答案</button>
+    </div>
+  </div>
+  <div class="container ">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="puzzleArea" id="puzzleArea">
+          <!-- 拼圖 -->
+          <!-- <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas>
+            <canvas></canvas> -->
+        </div>
+      </div>
+    </div>
+    <div class="ansPic">
+      <img id="answerPic"src="https://picsum.photos/400/400?random=1" alt="答案">
+    </div>
+  </div>
+
+
+  <script>
+    //1.設定原始圖片
+    var puzzleImg = new Image();
+    puzzleImg.src = "https://picsum.photos/400/400?random=1";
+    // puzzleImg.src = './puzzle/009.jpg';
+    var whiteImg = new Image();
+    whiteImg.src = './puzzle/white.jpg';
+    //2.生成切片 
+    var puzzleItem = document.querySelectorAll('#puzzleArea canvas');
+    // console.log(puzzleItem);
+    //3.取得父元素
+    var _puzzleArea = document.getElementById('puzzleArea');
+    //4.設定幾成幾
+    // let imgBase = 3;
+    let path = [];
+    let ans = [];
+
+   
+    var select = document.getElementById('droupdown').value;
+    console.log(select);
+    function change(){
+       select=document.getElementById('droupdown').value;
+      _puzzleArea.innerHTML = '';
+      path = [];
+      producePuzzle();
+    }
+    //一開始的圖片
+    puzzleImg.onload = function () {
+      producePuzzle();
+    }
+      function producePuzzle() {
+        let imgWidth = puzzleImg.width / select;
+        let imgHeight = puzzleImg.height / select;
+        for (let y = 0; y < select; y++) {
+          for (let x = 0; x < select; x++) {
+            let _canvas = document.createElement('canvas');
+            // _canvas.setAttribute('id', `p${y}${x}`);   //設定每個_canvas的座標
+            _canvas.height = imgHeight;
+            _canvas.width = imgWidth;
+            let canvasContent = _canvas.getContext('2d');
+            //白色那塊
+            if (y == 0 && x == 0) {
+              //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)  
+              canvasContent.drawImage(whiteImg, x * imgWidth, y * imgHeight, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight);
+              _canvas.setAttribute('class', 'white');
+              _canvas.style.cssText = "top:0px;left:0px;";
+              path.push({ top: 0, left: 0 });
+            }
+            else {
+              canvasContent.drawImage(puzzleImg, x * imgWidth, y * imgHeight, imgWidth, imgHeight, 0, 0, imgWidth, imgHeight);
+              _canvas.setAttribute('class', 'moveable');
+              _canvas.style.cssText = `top:${y * imgHeight}px;left:${x * imgWidth}px;`;
+              path.push({ top: y * imgHeight, left: x * imgWidth });
+              //每長_canvas同時也長出addEventListener
+              _canvas.addEventListener('click', function () {
+                var whiteBlock = document.getElementsByClassName('white')[0];
+                //判斷是否可以被移動==1.判斷自己是否在白色塊上下左右???
+                //獲得相對於上層的Y座標 獲得相對於上層的X座標
+                //如果邊界能對到就可以移動
+                if (this.offsetTop == whiteBlock.offsetTop && (theSame(this.offsetLeft + imgWidth) == theSame(whiteBlock.offsetLeft) || theSame(this.offsetLeft - imgWidth) == theSame(whiteBlock.offsetLeft))){
+                  let this_x = this.offsetLeft;//水平移動x軸
+                  let this_y = this.offsetTop;//垂直移動y軸
+                  // console.log(this_x);
+                  // console.log(this_y);
+                  //與白塊交換
+                  this.style.cssText = `top:${whiteBlock.offsetTop}px;left:${whiteBlock.offsetLeft}px;`;
+                  whiteBlock.style.cssText = `top:${this_y}px;left:${this_x}px;`;
+                }
+                else if (this.offsetLeft == whiteBlock.offsetLeft && (theSame(this.offsetTop + imgHeight) == theSame(whiteBlock.offsetTop) || theSame(this.offsetTop - imgHeight) == theSame(whiteBlock.offsetTop))) {
+                  let this_x = this.offsetLeft;
+                  let this_y = this.offsetTop;
+                  // console.log(this_x);
+                  // console.log(this_y);
+                  this.style.cssText = `top:${whiteBlock.offsetTop}px;left:${whiteBlock.offsetLeft}px;`;
+                  whiteBlock.style.cssText = `top:${this_y}px;left:${this_x}px;`;
+                }
+                //判斷成功返回原始圖片的條件
+                let all = 0;
+                var allBlocks = document.querySelectorAll('.puzzleArea canvas');
+                for (let item = 0; item < allBlocks.length; item++) {
+                  if (path[item].offsetTop == path[item].top && path[item].offsetLeft == path[item].left) {
+                    all++;
+                  }
+                }
+                // if(all == allBlocks.length){
+                //   all=0;
+                //   alert('恭喜完成');
+                // }
+              })
+            }
+            _puzzleArea.appendChild(_canvas);
+          }
+        }
+      }
     
+    //防止浮點數
+    function theSame(s1, s2) {
+      return parseInt(s1) == parseInt(s2);
+    }
+
+    function startBtn() {
+      let steps = 500;        //最大能走幾步
+      while (steps > 0) {     //移動幾步
+        var canvasBlocks = document.querySelectorAll('.moveable');
+        var BlocksLength = canvasBlocks.length - 1;
+        let randomNum = Math.floor(Math.random() * BlocksLength);
+        // console.log(randomNum);   //index(0~7)
+        // debugger;
+        let imgWidth = puzzleImg.width / select;
+        let imgHeight = puzzleImg.height / select;
+        var whiteBlock = document.getElementsByClassName('white')[0];
+        if (canvasBlocks[randomNum].offsetTop == whiteBlock.offsetTop && (theSame(canvasBlocks[randomNum].offsetLeft + imgWidth) == theSame(whiteBlock.offsetLeft) || theSame(canvasBlocks[randomNum].offsetLeft - imgWidth) == theSame(whiteBlock.offsetLeft))) {
+          let _thisX = canvasBlocks[randomNum].offsetLeft;
+          let _thisY = canvasBlocks[randomNum].offsetTop;
+          canvasBlocks[randomNum].style.cssText = `top:${whiteBlock.offsetTop}px;left:${whiteBlock.offsetLeft}px;`;
+          whiteBlock.style.cssText = `top:${_thisY}px;left:${_thisX}px;`;
+          steps--;       //若可移動步數就減1
+          ans.push(randomNum);
+        }
+        else if (canvasBlocks[randomNum].offsetLeft == whiteBlock.offsetLeft && (theSame(canvasBlocks[randomNum].offsetTop + imgHeight) == theSame(whiteBlock.offsetTop) || theSame(canvasBlocks[randomNum].offsetTop - imgHeight) == theSame(whiteBlock.offsetTop))) {
+          let _thisX = canvasBlocks[randomNum].offsetLeft;
+          let _thisY = canvasBlocks[randomNum].offsetTop;
+          canvasBlocks[randomNum].style.cssText = `top:${whiteBlock.offsetTop}px;left:${whiteBlock.offsetLeft}px;`;
+          whiteBlock.style.cssText = `top:${_thisY}px;left:${_thisX}px;`;
+          steps--;
+          ans.push(randomNum);
+        }
+      }
+    }
+    //顯示正確圖片
+      $('#showAnswer').click(function(){
+        $('#answerPic').toggle('fast');
+      })
+
+  </script>
 
 
-    
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
